@@ -36,7 +36,7 @@ def repr_str(dumper, data):
     if '\n' in data:
         return dumper.represent_scalar(
             u'tag:yaml.org,2002:str', data, style='|')
-    return dumper.org_represent_str(data)
+    return dumper.orig_represent_str(data)
 
 
 def decode(secret):
@@ -61,7 +61,7 @@ def edit(fname):
         decoded = decode(secret)
 
     with open(fname, 'w') as fid:
-        fid.write(yaml.safe_dump(decoded))
+        fid.write(yaml.safe_dump(decoded, default_flow_style=False))
 
     subprocess.call(EDITOR.split() + [fname])
 
@@ -70,12 +70,12 @@ def edit(fname):
         encoded = encode(edited)
 
     with open(fname, 'w') as fid:
-        fid.write(yaml.safe_dump(encoded))
+        fid.write(yaml.safe_dump(encoded, default_flow_style=False))
 
 
 def main():
     NoDatesSafeLoader.remove_implicit_resolver('tag:yaml.org,2002:timestamp')
-    yaml.SafeDumper.org_represent_str = yaml.SafeDumper.represent_str
+    yaml.SafeDumper.orig_represent_str = yaml.SafeDumper.represent_str
     yaml.add_representer(str, repr_str, Dumper=yaml.SafeDumper)
     fname = sys.argv[1]
     edit(fname)
