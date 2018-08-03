@@ -41,18 +41,20 @@ def repr_str(dumper, data):
 
 
 def decode(secret):
-    secret['data'] = {
-        k: base64.b64decode(v).decode('utf8')
-        for k, v in secret['data'].items()
-    }
+    if 'data' in secret:
+        secret['data'] = {
+            k: base64.b64decode(v).decode('utf8')
+            for k, v in secret['data'].items()
+        }
     return secret
 
 
 def encode(secret):
-    secret['data'] = {
-        k: base64.b64encode(v.encode())
-        for k, v in secret['data'].items()
-    }
+    if 'data' in secret:
+        secret['data'] = {
+            k: base64.b64encode(v.encode())
+            for k, v in secret['data'].items()
+        }
     return secret
 
 
