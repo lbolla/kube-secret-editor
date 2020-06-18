@@ -66,7 +66,7 @@ def edit(fname):
     with open(fname, 'w') as fid:
         fid.write(yaml.safe_dump(decoded, default_flow_style=False))
 
-    subprocess.call(EDITOR.split() + [fname])
+    subprocess.check_call(EDITOR.split() + [fname])
 
     with open(fname, 'r') as fid:
         edited = yaml.load(fid, Loader=NoDatesSafeLoader)
